@@ -1,12 +1,8 @@
-"use client"
-
-import { languages } from "@/constants";
 import { DisplayCard } from ".";
-import { useState } from "react";
 
 export default function Form() {
 
-  const [language, setLanguage] = useState("")
+  
 
   return(
     <div className="px-4 py-4 md:px-16 flex flex-col xl:flex-row justify-between items-start">
