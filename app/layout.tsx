@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Footer, NavBar } from "@/components";
 
+import { Montserrat } from 'next/font/google'
+
+const montserrat = Montserrat({subsets: ['latin']})
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="min-h-screen relative">
+    <html lang="en" className={`min-h-screen relative ${montserrat.className}`}>
       <body>
         <NavBar />
         {children}

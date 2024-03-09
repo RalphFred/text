@@ -1,11 +1,10 @@
-import { Montserrat } from 'next/font/google'
-
-const montserrat = Montserrat({subsets: ['latin']})
+import { Form } from '@/components';
 
 export default function Home() {
+
   return (
-    <main className={montserrat.className}>
-      
+    <main>
+      <Form />
     </main>
   );
 }

@@ -17,7 +17,7 @@ export default function NavBar() {
         </div>
       </Link>
 
-      <button className="flex items-center px-3 md:px-6 py-3 bg-black text-gray-200 rounded-2xl">
+      <button className="flex items-center px-3 md:px-6 py-3 bg-black text-gray-200 rounded-lg">
         <span className="font-semibold text-lg mr-4 hidden md:block">
           Settings
         </span>
