@@ -26,7 +26,7 @@ export async function fetchTranslation({
   };
 
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(url, options as RequestInit);
     const result = await response.json();
     return result;
   } catch (error) {
