@@ -11,6 +11,8 @@ export async function fetchTranslation({
 }: FetchTranslationProps) {
   const url = "https://text-translator2.p.rapidapi.com/translate";
 
+  console.log(process.env.NEXT_PUBLIC_RAPIDAPI_KEY)
+
   const options = {
     method: "POST",
     headers: {
