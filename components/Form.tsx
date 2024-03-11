@@ -7,6 +7,7 @@ import { useState } from "react";
 import Image from "next/image";
 
 export async function getServerSideProps() {
+
   const sourceLanguage = "en";
   const targetLanguage = "es";
   const text = "Hello";
@@ -24,6 +25,8 @@ export async function getServerSideProps() {
     return { props: { error: "Failed to fetch translation data." } };
   }
 }
+
+
 
 export default function Form() {
 
