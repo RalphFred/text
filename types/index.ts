@@ -14,3 +14,7 @@ export interface FetchTranslationProps {
   targetLanguage: string;
   text: string;
 }
+
+export interface FetchSpeechProps {
+  inputText: string;
+}

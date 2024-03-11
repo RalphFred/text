@@ -1,12 +1,26 @@
 "use client";
 
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { Combobox, Transition } from "@headlessui/react";
+
+import { fetchSpeech } from "@/utils";
 
 import { languages } from "@/constants";
 import { DisplayCardProps } from "@/types";
 import Image from "next/image";
-import { fetchTranslation } from "@/utils";
+
+export async function getServerSideProps() {
+  const inputText = "Hi there!";
+
+  try {
+    const outputSpeech = await fetchSpeech({inputText})
+
+    return ({props: outputSpeech});
+  } catch (error) {
+    console.error("Error fetching speech:", error);
+    return { props: { error: "Failed to fetch speech data." } };
+  }
+}
 
 export default function DisplayCard({
   language,
@@ -14,10 +28,18 @@ export default function DisplayCard({
   text,
   setText,
   input,
-  getTranslation
+  getTranslation,
 }: DisplayCardProps) {
   const [query, setQuery] = useState("");
+  const [audioSrc, setAudioSrc] = useState("");
 
+  useEffect(() => {
+    if(audioSrc) {
+      const audio = new Audio(audioSrc);
+      audio.play();
+    }
+  }, [audioSrc])
+ 
   const filteredLanguages =
     query === ""
       ? languages
@@ -32,7 +54,24 @@ export default function DisplayCard({
     if (getTranslation) {
       await getTranslation();
     }
-  }
+  };
+
+  const getSpeech = async () => {
+    console.log(text)
+    try {
+      if (text) { 
+        const translation = await fetchSpeech({
+          inputText: text,
+        });
+        
+        console.log(translation);
+      } else {
+        console.error("Text is undefined");
+      }
+    } catch (error) {
+      console.error("Error fetching data", error);
+    }
+  };
 
   return (
     <div className="w-full xl:w-[600px]">
@@ -58,7 +97,7 @@ export default function DisplayCard({
                 <Combobox.Option
                   key={index}
                   className={({ active }) => `
-                    relative search-manufacturer__option ${
+                    relative search-manufacturer__option cursor-pointer ${
                       active ? "font-bold" : ""
                     }
                     `}
@@ -89,17 +128,31 @@ export default function DisplayCard({
         </Transition>
       </Combobox>
 
-      <textarea
-        value={text}
-        onChange={(e) => setText?.(e.target.value)}
-        className={`w-full p-4 rounded-lg border-black h-[200px] md:h-[300px] border mt-4 mb-2 outline-1 ${input ? '' : 'pointer-events-none'}`}
-        placeholder="Enter text"
-      />
+      <div className="relative">
+        <textarea
+          value={text}
+          onChange={(e) => setText?.(e.target.value)}
+          className={`w-full p-4 rounded-lg border-black h-[200px] md:h-[300px] border mt-4 mb-2 outline-1 ${
+            input ? "" : "pointer-events-none"
+          }`}
+          placeholder="Enter text"
+        />
+        <button className="absolute bottom-8 right-4 text-white font-bold" onClick={getSpeech}>
+          <Image 
+           src="/read.svg"
+           alt="read icon"
+           width={30}
+           height={30}
+          />
+        </button>
+      </div>
 
       {input && (
         <div className="flex justify-end">
-          <button className="flex items-center px-4 md:px-6 py-3 w-full xl:w-auto justify-center bg-black text-gray-200 rounded-lg"
-          onClick={handleTranslation}>
+          <button
+            className="flex items-center px-4 md:px-6 py-3 w-full xl:w-auto justify-center bg-black text-gray-200 rounded-lg"
+            onClick={handleTranslation}
+          >
             <span className="font-semibold mr-4 text-lg">Translate</span>
             <Image
               src="/translate.svg"

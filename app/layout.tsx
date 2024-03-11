@@ -4,7 +4,7 @@ import { Footer, NavBar } from "@/components";
 
 import { Montserrat } from 'next/font/google'
 
-const montserrat = Montserrat({subsets: ['latin']})
+const montserrat = Montserrat({subsets: ['vietnamese']})
 
 
 export const metadata: Metadata = {
