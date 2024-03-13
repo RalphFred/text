@@ -50,7 +50,6 @@ export async function fetchSpeech({inputText}: FetchSpeechProps) {
   try {
     const response = await fetch(url, options as RequestInit);
     const result = await response.text();
-    console.log(result);
   } catch (error) {
     console.error(error);
   }

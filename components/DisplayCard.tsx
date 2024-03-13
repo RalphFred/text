@@ -9,13 +9,17 @@ import { languages } from "@/constants";
 import { DisplayCardProps } from "@/types";
 import Image from "next/image";
 
+interface SpeechData {
+  audioContent: string;
+}
+
 export async function getServerSideProps() {
   const inputText = "Hi there!";
 
   try {
-    const outputSpeech = await fetchSpeech({inputText})
+    const outputSpeech = await fetchSpeech({ inputText });
 
-    return ({props: outputSpeech});
+    return { props: outputSpeech };
   } catch (error) {
     console.error("Error fetching speech:", error);
     return { props: { error: "Failed to fetch speech data." } };
@@ -31,15 +35,17 @@ export default function DisplayCard({
   getTranslation,
 }: DisplayCardProps) {
   const [query, setQuery] = useState("");
-  const [audioSrc, setAudioSrc] = useState("");
+  // const [audioSrc, setAudioSrc] = useState("");
 
-  useEffect(() => {
-    if(audioSrc) {
-      const audio = new Audio(audioSrc);
-      audio.play();
-    }
-  }, [audioSrc])
- 
+  const [isLoading, setIsLoading] = useState(false);
+
+  // useEffect(() => {
+  //   if (audioSrc) {
+  //     const audio = new Audio(audioSrc);
+  //     audio.play();
+  //   }
+  // }, [audioSrc]);
+
   const filteredLanguages =
     query === ""
       ? languages
@@ -52,26 +58,30 @@ export default function DisplayCard({
 
   const handleTranslation = async () => {
     if (getTranslation) {
+      setIsLoading(true);
       await getTranslation();
+      setIsLoading(false);
     }
   };
 
-  const getSpeech = async () => {
-    console.log(text)
-    try {
-      if (text) { 
-        const translation = await fetchSpeech({
-          inputText: text,
-        });
-        
-        console.log(translation);
-      } else {
-        console.error("Text is undefined");
-      }
-    } catch (error) {
-      console.error("Error fetching data", error);
-    }
-  };
+  // const getSpeech = async () => {
+  //   console.log(text);
+  //   try {
+  //     if (text) {
+  //       const speech = await fetchSpeech({
+  //         inputText: text,
+  //       });
+
+  //       if (speech?.audioContent) {
+  //         setAudioSrc(speech.audioContent);
+  //       }
+  //     } else {
+  //       console.error("No speech returned");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data", error);
+  //   }
+  // };
 
   return (
     <div className="w-full xl:w-[600px]">
@@ -137,14 +147,12 @@ export default function DisplayCard({
           }`}
           placeholder="Enter text"
         />
-        <button className="absolute bottom-8 right-4 text-white font-bold" onClick={getSpeech}>
-          <Image 
-           src="/read.svg"
-           alt="read icon"
-           width={30}
-           height={30}
-          />
-        </button>
+        {/* <button
+          className="absolute bottom-8 right-4 text-white font-bold"
+          onClick={getSpeech}
+        >
+          <Image src="/read.svg" alt="read icon" width={30} height={30} />
+        </button> */}
       </div>
 
       {input && (
@@ -154,12 +162,21 @@ export default function DisplayCard({
             onClick={handleTranslation}
           >
             <span className="font-semibold mr-4 text-lg">Translate</span>
-            <Image
-              src="/translate.svg"
-              alt="translate icon"
-              width={25}
-              height={25}
-            />
+            {isLoading ? (
+              <Image
+                src="/load.svg"
+                alt="translate icon"
+                width={25}
+                height={25}
+              />
+            ) : (
+              <Image
+                src="/translate.svg"
+                alt="translate icon"
+                width={25}
+                height={25}
+              />
+            )}
           </button>
         </div>
       )}
