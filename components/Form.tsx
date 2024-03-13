@@ -59,6 +59,7 @@ export default function Form() {
         setText={setInputText}
         input={true}
         getTranslation={getTranslation}
+        placeholder="Enter what you want to translate..."
       />
       <Image
         src="/arrow.svg"
@@ -73,6 +74,7 @@ export default function Form() {
         text={outputText}
         setText={setOutputText}
         input={false}
+        placeholder=""
       />
     </div>
   );

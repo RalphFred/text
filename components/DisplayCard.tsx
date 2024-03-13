@@ -33,6 +33,7 @@ export default function DisplayCard({
   setText,
   input,
   getTranslation,
+  placeholder
 }: DisplayCardProps) {
   const [query, setQuery] = useState("");
   // const [audioSrc, setAudioSrc] = useState("");
@@ -71,10 +72,24 @@ export default function DisplayCard({
   //       const speech = await fetchSpeech({
   //         inputText: text,
   //       });
-
-  //       if (speech?.audioContent) {
-  //         setAudioSrc(speech.audioContent);
-  //       }
+        
+  //       // Corrected variable name and await the promise
+  //       const audioBuffer = await speech.arrayBuffer();
+  
+  //       const audioContext = new (window.AudioContext)();
+        
+  //       audioContext.decodeAudioData(audioBuffer, buffer => {
+  //         // Create a buffer source
+  //         const source = audioContext.createBufferSource();
+  //         source.buffer = buffer;
+  
+  //         // Connect the source to the audio context's destination (speakers)
+  //         source.connect(audioContext.destination);
+  
+  //         // Start playback
+  //         source.start();
+  //       });
+        
   //     } else {
   //       console.error("No speech returned");
   //     }
@@ -82,7 +97,8 @@ export default function DisplayCard({
   //     console.error("Error fetching data", error);
   //   }
   // };
-
+  
+  
   return (
     <div className="w-full xl:w-[600px]">
       <Combobox value={language} onChange={setLanguage}>
@@ -145,7 +161,7 @@ export default function DisplayCard({
           className={`w-full p-4 rounded-lg border-black h-[200px] md:h-[300px] border mt-4 mb-2 outline-1 ${
             input ? "" : "pointer-events-none"
           }`}
-          placeholder="Enter text"
+          placeholder={placeholder}
         />
         {/* <button
           className="absolute bottom-8 right-4 text-white font-bold"

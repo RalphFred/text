@@ -7,6 +7,7 @@ export interface DisplayCardProps {
   setText?: (text: string) => void;
   input?: boolean;
   getTranslation?: () => void;
+  placeholder?: string;
 }
 
 export interface FetchTranslationProps {
